@@ -86,6 +86,12 @@
             int M = int.Parse(firstLine [1]);
             int V = int.Parse(firstLine [2]);
 
+            for ( int i = 0; i <= N; i++ )
+            {
+                if ( !adjacencyList.ContainsKey(i) )
+                    adjacencyList [i] = new List<int>();
+            }
+
             for ( int i = 0; i < M; i++ )
             {
                 string [] edge = Console.ReadLine().Split();
@@ -96,6 +102,7 @@
             HashSet<int> visited = new HashSet<int>();
             DFS(V, visited);
             Console.WriteLine();
+
             BFS(V);
             Console.WriteLine();
         }
