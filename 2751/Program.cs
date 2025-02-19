@@ -49,7 +49,6 @@ namespace _2751
 
         static void Main( string [] args )
         {
-            StreamReader
             int N = int.Parse(Console.ReadLine());
             int [] array = new int [N];
             
