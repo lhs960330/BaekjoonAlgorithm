@@ -7,25 +7,13 @@ namespace Test
     {
         static void Main( string [] args )
         {
+            int [] input = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            int N = input [0];
+            int B = input [1];
+            int result = 0;
+           
 
-            string [] input = new string [5];
-            for ( int i = 0; i < 5; i++ )
-            {
-                input [i] = Console.ReadLine();
-            }
-            string result = "";
-            for ( int i = 0; i < 15; i++ )
-            {
-                for ( int j = 0; j < 5; j++ ) 
-                {
-                    if ( i < input[j].Length )
-                    {
-                        result += input[j] [i];
-                    }
-                }
-            }
-
-            Console.WriteLine(result);
+            Console.WriteLine( result );
 
         }
     }
