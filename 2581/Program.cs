@@ -6,6 +6,8 @@ namespace _2581
     {
         // https://www.acmicpc.net/problem/2581
         // M과 N 사이에 자연수중 소수를 찾아라
+
+        // 소수인지 아닌지 찾는 함수 
         static bool IsPrime( int num )
         {
             if ( num < 2 ) return false;
@@ -15,10 +17,11 @@ namespace _2581
             }
             return true;
         }
+        // M과 N 사이에 소수들 저장
         static List<int> Primes( int M, int N )
         {
             List<int> list = new List<int>();
-            for ( int i = M; i < N; i++ )
+            for ( int i = M; i <= N; i++ )
             {
                 if ( IsPrime(i) )
                 {
@@ -32,7 +35,6 @@ namespace _2581
             int M = int.Parse(Console.ReadLine());
             int N = int.Parse(Console.ReadLine());
             List<int> answer = Primes(M, N);
-            int sum = 0;
             if ( answer.Count == 0 )
             {
                 Console.WriteLine("-1");
