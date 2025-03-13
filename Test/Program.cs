@@ -1,19 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 
-namespace Test
+namespace PerfectNumber
 {
     internal class Program
     {
+        static bool IsPrime( int num )
+        {
+            if ( num < 2 ) return false;
+            for ( int j = 2; j * j <= num; j++ )
+            {
+                if ( num % j == 0 ) return false; 
+            }
+            return true;
+        }
         static void Main( string [] args )
         {
-            int [] input = Console.ReadLine().Split().Select(int.Parse).ToArray();
-            int N = input [0];
-            int B = input [1];
-            int result = 0;
-           
+            int N = int.Parse(Console.ReadLine());
+            int [] num = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            int count = num.Count(IsPrime);
 
-            Console.WriteLine( result );
+            Console.Write(count);
 
         }
     }
