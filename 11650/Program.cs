@@ -1,11 +1,13 @@
-﻿namespace _11650
+﻿using System.Text;
+
+namespace _11650
 {
     internal class Program
     {
         //https://www.acmicpc.net/problem/11650
         // 버블 정렬을 이용하여 해보았지만 런타임이 뜬다. 
         // 따라서 힙정렬이나 병합 정렬같이 시간 복잡도가 적은 걸 사용해보자
-        static void Main( string [] args )
+        /*static void Main( string [] args )
         {
             int N = int.Parse(Console.ReadLine());
 
@@ -67,6 +69,36 @@
                 result [k++] = right [j++];
 
             return result;
+        }*/
+        // 그래도 시간 초과 나옴
+        // 따라서 C#에서 제공해주는 함수를 사용하며 퀵정렬로
+        static void Main()
+        {
+            // 빠른 입력을 위해 StreamReader 사용
+            using ( StreamReader reader = new StreamReader(Console.OpenStandardInput()) )
+            using ( StreamWriter writer = new StreamWriter(Console.OpenStandardOutput()) )
+            {
+                int n = int.Parse(reader.ReadLine());
+                var points = new List<(int x, int y)>(n);
+
+                for ( int i = 0; i < n; i++ )
+                {
+                    string [] input = reader.ReadLine().Split();
+                    int x = int.Parse(input [0]);
+                    int y = int.Parse(input [1]);
+                    points.Add((x, y));
+                }
+
+                // 정렬 수행 (x 기준, 같다면 y 기준)
+                points.Sort(( a, b ) => ( a.x == b.x ) ? a.y.CompareTo(b.y) : a.x.CompareTo(b.x));
+
+                // StringBuilder를 사용하여 빠른 출력
+                StringBuilder sb = new StringBuilder();
+                foreach ( var (x, y) in points )
+                    sb.AppendLine($"{x} {y}");
+
+                writer.Write(sb.ToString());
+            }
         }
     }
 }
