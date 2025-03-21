@@ -4,28 +4,33 @@ namespace PerfectNumber
 {
     internal class Program
     {
+        
         static void Main( string [] args )
         {
-            using ( StreamReader input = new StreamReader(Console.OpenStandardOutput()) )
-            using ( StreamWriter writer = new StreamWriter(Console.OpenStandardOutput()) )
+            int T = int.Parse(Console.ReadLine());
+            int [] A = new int [T];
+            int [] B = new int [T];
+            int [] lcm = new int [T];
+            for ( int i = 0; i < T; i++ )
             {
-                int N = int.Parse(input.ReadLine());
-                int [] count = new int [10001];
+                int [] input = Console.ReadLine().Split().Select(int.Parse).ToArray();
 
-                for ( int i = 0; i < N; i++ )
-                {
-                    // 같은 숫자가 몇개인지
-                    count [int.Parse(input.ReadLine())]++;
-                }
-                // 같은 숫자들을 먼저 사용
-                for ( int num = 1; num <= 10000; num++ )
-                {
-                    for ( int j = 0; j < count [num]; j++ )
-                    {
-                        writer.WriteLine(num);
-                    }
-
-                }
+                A [i] = input [0];
+                B [i] = input [1];
+                lcm [i] = ( A [i] * B [i] ) / GCD(A [i], B [i]);
+            }
+            foreach(int i in lcm )
+                Console.WriteLine(i);
+        }
+        static int GCD( int a, int b )
+        {
+            while ( b != 0 )
+            {
+                int temp = b;
+                b = a % b;
+                a = temp;
+            }
+            return a;
         }
     }
 }
