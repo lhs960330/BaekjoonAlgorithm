@@ -5,63 +5,62 @@
         //https://www.acmicpc.net/problem/17103
         // 시간초과 이유는?
         // 여러번 같은 계산을 하게 되어서 나오는듯?
-        // 만약 테스트 중 가장 큰 수를 가지고 그 수에서 가지고있는 모든 소수를 검색 후 소수보다 작은 수들의 합을 체크해서 해보자
+        // 테스트 숫자에서 가장 큰 수를 알고 그 수 보다 적은 모든 숫자들의 소수를 검색할 수 있게 만들어야됨
+        // 골드바흐 추측이라는 경우를 사용했다. 
+        // 쉽게 설명하면 내가 정한 숫자(N) 중 소수인 경우인 i가 있고 N-i가 소수이게되면
+        // 두 수의 합이 무조건 N이 되기 때문에 모든 경우의 합을 비교할 필요없이 소수인지만 확인하게 되면서 좀 더 가벼운 코드가 된다.
+
         static void Main( string [] args )
         {
             using ( StreamReader sr = new StreamReader(Console.OpenStandardInput()) )
             using ( StreamWriter sw = new StreamWriter(Console.OpenStandardOutput()) )
             {
                 int T = int.Parse(sr.ReadLine());
-                int [] answer = new int [T];
+                int [] nums = new int [T];
+                int maxNumber = 0;
                 for ( int i = 0; i < T; i++ )
                 {
-                    int num = int.Parse(sr.ReadLine());
-                    // num 밑으로 소수들 다 찾기
-                    List<int> primes = new List<int>();
-                    for ( int j = 1; j < num; j++ )
+                    // 입력 받는 순간 가장 큰 수를 체크
+                    nums [i] = int.Parse(sr.ReadLine());
+                    if ( nums [i] > maxNumber )
+                        maxNumber = nums [i];
+                }
+
+                bool [] isPrimes = PrimeChecker(maxNumber);
+                // 각 테스트 케이스에 대해 골드바흐 파티션 계산
+                foreach ( int n in nums )
+                {
+                    int count = 0;
+                    for ( int i = 2; i <= n / 2; i++ )
                     {
-                        if ( PrimeChecker(j) )
-                            primes.Add(j);
+                        // i와 n-i가 모두 소수인 경우, 이는 골드바흐 파티션이 된다.
+                        if ( isPrimes [i] && isPrimes [n - i] )
+                            count++;
                     }
-                    // 저장한 list에서 소수중 두개의 합이 num이 나오는 경우 체크
-
-                    answer [i] = SumChecket(num, primes);
-                }
-                foreach ( int a in answer )
-                {
-                    sw.WriteLine(a);
+                    sw.WriteLine(count);
                 }
             }
         }
-        static int SumChecket( int num, List<int> primes )
+
+        static bool [] PrimeChecker( int num )
         {
-            int count = 0;
-            for ( int i = 0; i < primes.Count; i++ )
+            // 0도 포함이므로 +1해준다.
+            bool [] isPrimes = new bool [num + 1];
+            // 0과 1를 제외한 모든 자연수를 true로 초기화해준다.
+            for ( int i = 2; i <= num; i++ )
+                isPrimes [i] = true;
+
+            for ( int i = 2; i * i <= num; i++ )
             {
-                // 같은 소수의 합이 num될때
-                if ( num == primes [i] * 2 )
-                    count++;
-                for ( int j = i + 1; j < primes.Count; j++ )
+                if ( isPrimes [i] )
                 {
-                    if ( num == primes [j] + primes [i] )
-                        count++;
+                    // 만약 i*i가 num보다 작으면 1,i를 가지고있는 수 이기 때문에 소수가 아니게 된다.
+                    for ( int j = i * i; j <= num; j += i )
+                        isPrimes [j] = false;
                 }
             }
-            return count;
-        }
-        static bool PrimeChecker( int num )
-        {
-            if ( num <= 1 ) return false;
-            if ( num == 2 || num == 3 ) return true;
-            if ( num % 2 == 0 || num % 3 == 0 ) return false;
 
-            for ( int i = 5; i * i <= num; i += 6 )
-            {
-                if ( num % i == 0 || num % ( i + 2 ) == 0 )
-                    return false;
-            }
-            return true;
-
+            return isPrimes;
         }
     }
 }
