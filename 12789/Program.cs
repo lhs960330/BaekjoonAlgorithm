@@ -12,27 +12,22 @@
             int [] nums = Console.ReadLine().Split().Select(int.Parse).ToArray();
             for ( int i = 0; i < N; i++ )
             {
-                // 다음순서나 stack에 들어간 숫자가 count와 같지 않으면 넘어감
-                if ( nums [i] != count || stack.Peek() != count )
-                    stack.Push(nums [i]);
+                // 현재 숫자가 다음 순서(count)인지 확인
+                if ( nums [i] == count )
+                {
+                    count++; // 순서가 맞으면 count 증가
+                }
                 else
                 {
-                    // stack에 다음 순서와 같으면 없애주면서 카운트를 올려줌
-                    if ( stack.Peek() == count )
-                        stack.Pop();
-                    count++;
+                    stack.Push(nums [i]); // 순서가 아니면 스택에 추가
                 }
 
-            }
-            while ( stack.Count != 0 )
-            {
-                if ( stack.Peek() == count )
+                // 스택에서 순서를 처리
+                while ( stack.Count > 0 && stack.Peek() == count )
                 {
                     stack.Pop();
                     count++;
                 }
-                else
-                    break;
             }
             if ( stack.Count == 0 )
                 Console.WriteLine("Nice");
