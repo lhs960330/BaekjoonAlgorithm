@@ -5,6 +5,7 @@
         //https://www.acmicpc.net/problem/25192
         static void Main( string [] args )
         {
+           
             int N = int.Parse(Console.ReadLine());
             HashSet<string> nameList = new HashSet<string>();
             int answer = 0;
